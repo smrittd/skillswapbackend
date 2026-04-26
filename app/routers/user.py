@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserResponce
 from app.models.user import User
 from app.database.database import get_db
-
+from app.utils.user import hash_password
 router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.post('/', response_model=UserResponce)
@@ -16,12 +16,12 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
     if db_user_username:
         raise HTTPException(status_code=400, detail='Username already taken')
-
-
+    
+    hashed_pwd = hash_password(user.password)
     new_user = User(
         email = user.email,
         username = user.username,
-        password = user.password,
+        password = hashed_pwd,
         skill = user.skill
     )
 
