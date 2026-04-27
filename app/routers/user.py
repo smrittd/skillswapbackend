@@ -1,4 +1,5 @@
 from fastapi import APIRouter,HTTPException,Depends
+from app.dependencies.user import get_current_user
 from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserResponce
 from app.models.user import User
@@ -32,4 +33,6 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
 
 
-    
+@router.get('/me', response_model=UserResponce)
+def get_my_progile(current_user: User = Depends(get_current_user)):
+    return current_user
