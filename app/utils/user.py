@@ -16,8 +16,8 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 SECRET_KEY = 'skillswap_super_secret'
 ALGORITHM = 'HS256'
 
-def create_access_toker(data: dict):
-    to_encode = data.copy
+def create_access_token(data: dict):
+    to_encode = data.copy()
 
     expire = datetime.now(timezone.utc) + timedelta(minutes=30)
     to_encode.update({'exp': expire})
